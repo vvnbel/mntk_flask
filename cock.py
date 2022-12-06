@@ -8,3 +8,6 @@ def make_shell_context():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    test_var = 0
+
+tes2 = 9999

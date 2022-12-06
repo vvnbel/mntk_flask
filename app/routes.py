@@ -12,6 +12,7 @@ from app import db
 from app.forms import RegistrationForm
 from datetime import datetime
 from app.forms import EditProfileForm
+from cock import tes2
 
 @app.route('/')
 @app.route('/index')
@@ -28,8 +29,8 @@ def index():
             'body': 'еугай'
         },
         {
-            'author': {'username': 'Ипполит'},
-            'body': 'симплсимпл выбери димпл'
+            'author': {'username': 'Мудрый'},
+            'body': 'все геи'
         }
     ]
     return render_template("index.html", title='Home Page', posts=posts)
@@ -43,7 +44,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('НЕПРАВИЛЬНО - ИМЯ ИЛИ ПАСС')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -77,12 +78,13 @@ def register():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    test_var2 = '1122'
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    return render_template('user.html', user=user, posts=posts, tes=test_var2, tes2=tes2)
 
 
 @app.before_request
@@ -95,7 +97,8 @@ def before_request():
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
+    #выводит красным что имя пользователя занято
+    form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
@@ -107,4 +110,3 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
-
