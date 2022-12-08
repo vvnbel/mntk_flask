@@ -14,3 +14,4 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('cokradiomntk')
     MAIL_PASSWORD = os.environ.get('6439247185')
     ADMINS = ['cokradiomntk@gmail.com']
+    POSTS_PER_PAGE = 3
